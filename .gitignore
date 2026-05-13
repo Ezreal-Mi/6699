@@ -7,6 +7,11 @@ __pycache__/
 Thumbs.db
 
 *.log
+*.aux
+*.bbl
+*.blg
+*.out
+*.synctex.gz
 
 # Local scratch notebooks/scripts
 Untitled.ipynb
