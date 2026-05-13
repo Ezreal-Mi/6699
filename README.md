@@ -158,7 +158,9 @@ Repeat Phases 1--4 for $k \in \{2, 3, 4, 5, 6\}$. The saved results give qualita
 ```text
 EECS6699_Final_Project/
 |-- README.md
+|-- requirements.txt
 |-- .gitignore
+|-- .gitattributes
 |-- notebooks/
 |   |-- 6699_final.ipynb
 |   |-- phase1_baseline.ipynb
@@ -179,6 +181,11 @@ EECS6699_Final_Project/
 |   |-- run_phase1_fixed.py
 |   |-- plot_phase1_w16.py
 |   `-- check_report_consistency.py
+|-- tests/
+|   |-- test_models_targets.py
+|   |-- test_noise.py
+|   |-- test_experiment_registry.py
+|   `-- test_scripts.py
 |-- results/
 |   |-- figures/
 |   |-- tables/
@@ -201,7 +208,7 @@ git clone https://github.com/Ezreal-Mi/6699.git
 cd 6699
 
 # Install dependencies
-pip install torch numpy matplotlib scipy jupyterlab
+pip install -r requirements.txt
 
 # Reproduce Phase 1 and regenerate its W=16 figure
 python scripts/run_phase1_fixed.py
@@ -213,6 +220,9 @@ jupyter lab notebooks/phase2_input_noise.ipynb
 
 # Check report/result consistency
 python scripts/check_report_consistency.py
+
+# Run fast tests
+pytest
 ```
 
 Runtime depends on hardware and phase. The saved tables and figures are included

@@ -55,13 +55,14 @@ does not establish an order-of-magnitude empirical separation: the 5-seed mean i
 $0.010\pm0.006$ (deep) vs.\ $0.029\pm0.008$ (shallow), a $2.9\times$ ratio.
 Thus H1 is moderately supported, not fully confirmed at the original $10\times$
 criterion (Section~\ref{sec:h1}).
-We extend the analysis to noise regimes.  Under Gaussian input noise, the deep network's
-advantage inverts at $\sigx \approx 2^{-k} = 0.0625$ (H2).  Under label noise
-$\sigy = 0.1$, the deep network degrades $7.5\times$ more than the shallow one (H3).
-Under FGSM/PGD adversarial attacks, both attacks find $\epst \approx 0.05$, within
-$1.25\times$ of the theoretical $2^{-k}$ (H4).  Mechanistically, the deep network
-has a larger empirical Lipschitz constant $\Lip$, explaining its higher sensitivity
-in all three noise regimes (H5).  A complexity scaling experiment (Phase 6) gives
+We extend the analysis to noise regimes using the original width-8 robustness baseline.
+Under Gaussian input noise, the deep model's advantage inverts at $\sigx \approx 0.03$,
+below but on the same order as $2^{-4}=0.0625$ (H2).  Under label noise $\sigy = 0.1$,
+the deep model degrades $7.5\times$ more than the shallow one (H3). Under FGSM/PGD
+adversarial attacks, both attacks find $\epst \approx 0.05$ on the coarse Phase 4 grid
+(H4).  Mechanistically, the deep model has a larger empirical Lipschitz constant $\Lip$,
+which is consistent with its higher sensitivity in all three noise regimes (H5).
+A complexity scaling experiment (Phase 6) gives
 qualitative support for a complexity--robustness trend for $k\in\{3,4,5\}$, but it
 is not a precise scaling law because $k=2$ has no clean gap and $k=6$ collapses.
 \end{abstract}
@@ -82,7 +83,7 @@ depth $L$ but only $O(W)$ with width $W$; each region is correspondingly narrow,
 fine-grained predictions vulnerable to perturbations of the same scale.
 
 This paper asks: \emph{Is the depth advantage robust, or does it vanish under noise?}
-We study this via five hypotheses (H1–H5) across four experimental phases, using the
+We study this via five hypotheses (H1--H5) across six experimental phases, using the
 iterated sawtooth as a clean, mathematically tractable witness function.
 
 \paragraph{Contributions.}
@@ -90,8 +91,8 @@ iterated sawtooth as a clean, mathematically tractable witness function.
   \item Reproducible curriculum-trained ReLU networks that give partial empirical
         support for depth advantage on $f_4$.
   \item Systematic sweeps under Gaussian input noise, label noise, and adversarial
-        perturbations, identifying crossover scales $\sigt \approx \epst \approx 2^{-k}$.
-  \item Mechanistic explanation via empirical Lipschitz estimation and linear-region counting.
+        perturbations, identifying crossover scales on the same order as $2^{-k}$.
+  \item Mechanistic evidence from empirical Lipschitz estimation and linear-region counting.
   \item A complexity scaling trend: crossovers decrease with $k$ for $k\in\{3,4,5\}$, while $k=2$ has no clean gap and $k=6$ collapses.
 \end{itemize}
 
@@ -228,13 +229,15 @@ than a decisive reproduction of the theorem's asymptotic separation.
 \subsection{H2: Input Noise Resilience}
 \label{sec:h2}
 
-Figure~\ref{fig:phase2} shows adversarial MSE vs.\ $\sigx$ for both architectures.
+Figure~\ref{fig:phase2} shows test MSE vs.\ $\sigx$ for both architectures.
 At small $\sigx \lesssim 0.01$, the deep network retains its advantage.
-The curves cross at $\sigt \approx 0.03$, close to the theoretical $2^{-k} = 0.0625$
-(within factor 2).  Beyond the crossover, the deep network degrades faster and its MSE
+The curves cross at $\sigt \approx 0.03$, below but on the same order as the
+theoretical $2^{-k} = 0.0625$. Beyond the crossover, the deep network degrades faster and its MSE
 exceeds the shallow's — the depth advantage \emph{inverts}.
 
-\textbf{H2 supported.} $\sigt \approx 2^{-k}$. $\checkmark$
+\textbf{H2 is consistent within the W=8 robustness baseline.} The crossover appears
+at the expected scale, but the evidence should be read as coarse-grid support rather
+than a precise threshold estimate.
 
 \begin{figure}[h]
   \centering
@@ -254,7 +257,8 @@ a $\mathbf{7.5\times}$ difference.
 The middle panel (generalization gap) tracks the $-\sigy^2$ baseline for both models,
 indicating neither fully memorizes noise within the training budget.
 
-\textbf{H3 supported.} Deep degrades more under label noise, consistent with higher Lipschitz sensitivity. $\checkmark$
+\textbf{H3 is consistent within the W=8 robustness baseline.} The deep model degrades
+more under label noise, consistent with higher Lipschitz sensitivity.
 
 \begin{figure}[h]
   \centering
@@ -269,7 +273,9 @@ indicating neither fully memorizes noise within the training budget.
 \label{sec:h4}
 
 Figure~\ref{fig:phase4} shows adversarial MSE vs.\ $\varepsilon$ under FGSM and PGD-40.
-Both attacks locate $\epst \approx 0.05$ on the coarse grid $\{0.001,0.01,0.05\}$, within $1.25\times$ of the theoretical $2^{-4} = 0.0625$. Phase~6 refines this with a finer $\varepsilon$ grid and finds $\epst \approx 0.03$ for $k=4$ (Table~\ref{tab:scaling}).
+Both attacks locate $\epst \approx 0.05$ on the coarse grid $\{0.001,0.01,0.05\}$,
+below but on the same order as $2^{-4} = 0.0625$. Phase~6 uses a finer
+$\varepsilon$ grid and finds $\epst \approx 0.03$ for $k=4$ (Table~\ref{tab:scaling}).
 Above $\epst$, the deep network's adversarial MSE exceeds the shallow's — the depth
 advantage collapses under adversarial perturbation.
 
@@ -277,7 +283,8 @@ The FGSM curve is non-monotone at large $\varepsilon > 0.0625$: single-step pert
 overshoot the sawtooth period, wrapping to a region of lower loss. This is algorithmic,
 not a bug; PGD avoids this artifact.
 
-\textbf{H4 supported.} $\epst \approx 2^{-k}$ (within factor 1.25). $\checkmark$
+\textbf{H4 is consistent within the W=8 robustness baseline.} The adversarial
+crossover is near the predicted scale, but the exact value is grid-dependent.
 
 \begin{figure}[h]
   \centering
@@ -314,10 +321,12 @@ Ratio (deep/shallow)     & $2.16\times$    & $241.8\times$ & $1.35\times$ \\
 \noindent Paired one-sided $t$-test: $t = 2.72$, $p = 0.026$ (deep $\Lip_\mathrm{fd}$ higher in all 5 seeds).
 
 The Lipschitz ratio predicts the sign of all three robustness gaps (Phase 2–4),
-supporting the causal account: \emph{depth buys expressivity through high Lipschitz constant,
-which in turn amplifies noise sensitivity}.
+supporting a mechanistic interpretation: \emph{in this baseline, the same trained
+structure that gives the deep model more high-frequency variation is associated with
+higher noise sensitivity}.
 
-\textbf{H5 supported.} $\Lip_\mathrm{deep} > \Lip_\mathrm{shallow}$ (all seeds). $\checkmark$
+\textbf{H5 is consistent within the W=8 robustness baseline.} The empirical
+Lipschitz evidence supports the proposed mechanism, but it is not a causal proof.
 
 
 \subsection{Phase 6: Complexity Scaling}
@@ -398,14 +407,14 @@ crossover values are not reported.
 \label{sec:conclusion}
 
 We have empirically studied Telgarsky's depth separation theorem and its robustness
-implications across five phases:
+implications across six phases:
 
 \begin{enumerate}
   \item \textbf{H1}: Widening to $W=16$ yields a stable $2.9\times$ clean-MSE advantage, so H1 is partially supported but not confirmed at the original $10\times$ criterion.
-  \item \textbf{H2}: The advantage inverts at $\sigx \approx 2^{-k}$—input noise resilience.
-  \item \textbf{H3}: Deep degrades $7.5\times$ more under label noise—Lipschitz sensitivity.
-  \item \textbf{H4}: Critical adversarial budget $\epst \approx 0.05$ is close to the $2^{-k}$ scale.
-  \item \textbf{H5}: Larger empirical Lipschitz explains all three gaps—mechanism identified.
+  \item \textbf{H2}: The advantage inverts at $\sigx \approx 0.03$, on the same order as $2^{-4}$ in the W=8 robustness baseline.
+  \item \textbf{H3}: Deep degrades $7.5\times$ more under label noise in the W=8 robustness baseline.
+  \item \textbf{H4}: Critical adversarial budget $\epst \approx 0.05$ is close to the $2^{-4}$ scale on the coarse Phase 4 grid.
+  \item \textbf{H5}: Larger empirical Lipschitz is consistent with the sensitivity pattern across all three robustness gaps.
   \item \textbf{Phase 6}: Crossovers decrease with $k$ for $k=3,4,5$, giving qualitative support for a complexity-robustness trend; $k=2$ has no gap and $k=6$ collapses.
 \end{enumerate}
 

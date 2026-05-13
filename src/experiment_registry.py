@@ -45,6 +45,38 @@ class RobustnessBaselineFacts:
 
 
 @dataclass(frozen=True)
+class Phase2Facts:
+    k: int
+    theoretical_sigma_star: float
+    empirical_sigma_star: float
+    h2_supported: bool
+
+
+@dataclass(frozen=True)
+class Phase3Facts:
+    deep_degradation_at_max_sigma: float
+    shallow_degradation_at_max_sigma: float
+    h3_supported: bool
+
+
+@dataclass(frozen=True)
+class Phase4Facts:
+    theory_eps_star: float
+    fgsm_eps_star: float
+    pgd_eps_star: float
+    h4_supported: bool
+
+
+@dataclass(frozen=True)
+class Phase5Facts:
+    deep_lip_fd_mean: float
+    shallow_lip_fd_mean: float
+    lip_fd_ratio: float
+    deep_lip_higher_all_seeds: bool
+    h5_supported: bool
+
+
+@dataclass(frozen=True)
 class Phase6Facts:
     k_values: tuple[int, ...]
     valid_trend_ks: tuple[int, ...]
@@ -85,6 +117,50 @@ def load_robustness_baseline_facts() -> RobustnessBaselineFacts:
     )
 
 
+def load_phase2_facts(table_dir: Path = TABLE_DIR) -> Phase2Facts:
+    """Load Phase 2 input-noise crossover facts."""
+    data = json.loads((table_dir / "phase2_summary.json").read_text())
+    return Phase2Facts(
+        k=int(data["k"]),
+        theoretical_sigma_star=float(data["theoretical_sigma_star"]),
+        empirical_sigma_star=float(data["empirical_sigma_star"]),
+        h2_supported=bool(data["H2_supported"]),
+    )
+
+
+def load_phase3_facts(table_dir: Path = TABLE_DIR) -> Phase3Facts:
+    """Load Phase 3 label-noise degradation facts."""
+    data = json.loads((table_dir / "phase3_summary.json").read_text())
+    return Phase3Facts(
+        deep_degradation_at_max_sigma=float(data["deep_degradation_at_max_sigma"]),
+        shallow_degradation_at_max_sigma=float(data["shallow_degradation_at_max_sigma"]),
+        h3_supported=bool(data["H3_supported"]),
+    )
+
+
+def load_phase4_facts(table_dir: Path = TABLE_DIR) -> Phase4Facts:
+    """Load Phase 4 adversarial crossover facts."""
+    data = json.loads((table_dir / "phase4_summary.json").read_text())
+    return Phase4Facts(
+        theory_eps_star=float(data["theory_eps_star"]),
+        fgsm_eps_star=float(data["fgsm_eps_star"]),
+        pgd_eps_star=float(data["pgd_eps_star"]),
+        h4_supported=bool(data["H4_supported"]),
+    )
+
+
+def load_phase5_facts(table_dir: Path = TABLE_DIR) -> Phase5Facts:
+    """Load Phase 5 Lipschitz diagnostic facts."""
+    data = json.loads((table_dir / "phase5_summary.json").read_text())
+    return Phase5Facts(
+        deep_lip_fd_mean=float(data["deep_lip_fd_mean"]),
+        shallow_lip_fd_mean=float(data["shallow_lip_fd_mean"]),
+        lip_fd_ratio=float(data["lip_fd_ratio"]),
+        deep_lip_higher_all_seeds=bool(data["deep_lip_higher_all_seeds"]),
+        h5_supported=bool(data["H5_supported"]),
+    )
+
+
 def load_phase6_facts(table_dir: Path = TABLE_DIR) -> Phase6Facts:
     """Load Phase 6 scaling facts and preserve the conservative interpretation."""
     data = json.loads((table_dir / "phase6_summary.json").read_text())
@@ -105,5 +181,9 @@ def load_all_facts() -> dict[str, object]:
     return {
         "h1": load_h1_facts(),
         "robustness_baseline": load_robustness_baseline_facts(),
+        "phase2": load_phase2_facts(),
+        "phase3": load_phase3_facts(),
+        "phase4": load_phase4_facts(),
+        "phase5": load_phase5_facts(),
         "phase6": load_phase6_facts(),
     }
