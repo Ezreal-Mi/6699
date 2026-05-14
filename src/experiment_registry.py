@@ -1,9 +1,7 @@
-"""Canonical experiment facts for reports and consistency checks.
+"""Canonical experiment facts for the report and presentation.
 
-This module is the small source of truth for claims that are easy to let drift
-across the README, paper, slides, and generated tables. It reads saved result
-files when available and keeps the conservative interpretation of the current
-project explicit.
+This module reads saved result files and exposes the small set of numbers and
+interpretations reused across the README, paper, slides, and generated tables.
 """
 from __future__ import annotations
 
@@ -177,7 +175,7 @@ def load_phase6_facts(table_dir: Path = TABLE_DIR) -> Phase6Facts:
 
 
 def load_all_facts() -> dict[str, object]:
-    """Load all canonical facts used by report consistency checks."""
+    """Load all canonical facts used by the report-facing summaries."""
     return {
         "h1": load_h1_facts(),
         "robustness_baseline": load_robustness_baseline_facts(),

@@ -1,12 +1,12 @@
-"""Re-run Phase 1 with the current curriculum and restart logic.
+"""Reproduce Phase 1 with the current curriculum and restart logic.
 
 Default settings reproduce the conservative H1 W=16 rescue run:
 
-    python scripts/run_phase1_fixed.py
+    python scripts/run_phase1.py
 
 For a cheap smoke run that does not overwrite the default interpretation:
 
-    python scripts/run_phase1_fixed.py --quick
+    python scripts/run_phase1.py --quick
 """
 from __future__ import annotations
 
@@ -116,7 +116,7 @@ def main(argv: list[str] | None = None) -> int:
 
     deep_cfg, shallow_cfg = build_train_configs(args, device)
 
-    print(f"Running Phase 1 fixed: device={device}, seeds={args.seeds}")
+    print(f"Running Phase 1: device={device}, seeds={args.seeds}")
     print(f"Architecture: deep L={args.deep_depth}, W={args.deep_width}; shallow L=2, parameter matched")
     print(f"Deep:    {args.epochs} epochs, up to {args.max_restarts} curriculum restarts")
     print("Shallow: same epochs, no curriculum restarts")
@@ -136,7 +136,7 @@ def main(argv: list[str] | None = None) -> int:
     shallow_mu, shallow_sd = float(np.mean(shallow_losses)), float(np.std(shallow_losses))
 
     print("\n" + "=" * 60)
-    print("PHASE 1 FIXED RESULTS")
+    print("PHASE 1 RESULTS")
     print("=" * 60)
     for seed, deep_loss, shallow_loss in zip(args.seeds, deep_losses, shallow_losses):
         tag = "[OK]" if deep_loss < args.collapse_threshold else "[--]"

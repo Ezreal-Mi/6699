@@ -3,8 +3,8 @@ from pathlib import Path
 
 
 def load_phase1_script():
-    path = Path(__file__).resolve().parents[1] / "scripts" / "run_phase1_fixed.py"
-    spec = importlib.util.spec_from_file_location("run_phase1_fixed", path)
+    path = Path(__file__).resolve().parents[1] / "scripts" / "run_phase1.py"
+    spec = importlib.util.spec_from_file_location("run_phase1", path)
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
     spec.loader.exec_module(module)

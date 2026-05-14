@@ -178,9 +178,8 @@ EECS6699_Final_Project/
 |   |-- io_utils.py
 |   `-- experiment_registry.py
 |-- scripts/
-|   |-- run_phase1_fixed.py
-|   |-- plot_phase1_w16.py
-|   `-- check_report_consistency.py
+|   |-- run_phase1.py
+|   `-- plot_phase1_w16.py
 |-- tests/
 |   |-- test_models_targets.py
 |   |-- test_noise.py
@@ -210,23 +209,33 @@ cd 6699
 # Install dependencies
 pip install -r requirements.txt
 
-# Reproduce Phase 1 and regenerate its W=16 figure
-python scripts/run_phase1_fixed.py
-python scripts/plot_phase1_w16.py
-
-# Run notebooks
+# Recommended: open the top-level reproduction notebook
 jupyter lab notebooks/6699_final.ipynb
-jupyter lab notebooks/phase2_input_noise.ipynb
 
-# Check report/result consistency
-python scripts/check_report_consistency.py
+# Or run phase notebooks individually
+jupyter lab notebooks/phase1_baseline.ipynb
+jupyter lab notebooks/phase2_input_noise.ipynb
+jupyter lab notebooks/phase3_label_noise.ipynb
+jupyter lab notebooks/phase4_adversarial.ipynb
+jupyter lab notebooks/phase5_lipschitz_regions.ipynb
+jupyter lab notebooks/phase6_complexity_scaling.ipynb
 
 # Run fast tests
 pytest
 ```
 
 Runtime depends on hardware and phase. The saved tables and figures are included
-so the report can be checked without rerunning the long experiments.
+so the report can be reviewed without rerunning the long experiments.
+
+The repository is self-contained for code execution, report checks, and PDF
+review: scripts import from the local `src/` package, and the report reads
+figures from the local `results/figures/` directory. Large trained `.pt` model
+weights are not versioned; rerun `python scripts/run_phase1.py` before
+`python scripts/plot_phase1_w16.py` if those local checkpoints are missing.
+The Phase 1 notebook calls the same script internally, so the notebook and
+command-line reproduction paths share one implementation.
+The top-level `notebooks/6699_final.ipynb` can either inspect the saved outputs
+or execute the six phase notebooks in order after setting `RUN_EXPERIMENTS = True`.
 
 ---
 
