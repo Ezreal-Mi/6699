@@ -294,10 +294,11 @@ constant $\Lip_\mathrm{fd}$ is consistently larger than the shallow's across all
 successfully encoding the high-frequency structure of $f_4$.
 
 \begin{table}[h]
-\small
+\scriptsize
 \centering
 \caption{H5: Lipschitz constants and linear regions (5 seeds, $k=4$).}
 \label{tab:h5}
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{lccc}
 \toprule
 Model & $\Lip_\mathrm{fd}$ & $\Lip_\mathrm{spec}$ & Regions \\
@@ -333,27 +334,28 @@ and the $k=6$ deep model collapses to the constant-predictor MSE $\approx 1/12$,
 meaningful crossover is reported.
 
 \begin{table}[h]
-\small
+\scriptsize
 \centering
-\caption{Phase 6: Crossovers vs.\ theoretical $2^{-k}$ (5 seeds). Empty entries mean
-  no meaningful crossover was found in the tested range.}
+\caption{Phase 6: Crossovers vs.\ theoretical $2^{-k}$ (5 seeds).}
 \label{tab:scaling}
+\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{cccccc}
 \toprule
-$k$ & Theory $2^{-k}$ & $\sigt$ & Ratio ($\sigt/2^{-k}$) & $\epst$ (FGSM) & Ratio ($\epst/2^{-k}$) \\
+$k$ & $2^{-k}$ & $\sigt$ & $\sigt/2^{-k}$ & $\epst$ & $\epst/2^{-k}$ \\
 \midrule
-2    & 0.2500 & ---   & no expressivity gap & ---   & no expressivity gap \\
+2    & 0.2500 & ---   & n/a           & ---   & n/a           \\
 3    & 0.1250 & 0.050 & $0.40\times$        & 0.120 & $0.96\times$        \\
 4    & 0.0625 & 0.018 & $0.29\times$        & 0.030 & $0.48\times$        \\
 5    & 0.0313 & 0.008 & $0.26\times$        & 0.018 & $0.58\times$        \\
-6    & 0.0156 & ---   & collapsed           & ---   & collapsed           \\
+6    & 0.0156 & ---   & collapse      & ---   & collapse      \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \noindent\textit{Note: for $k=3,4,5$, the empirical crossovers decrease with $k$, but
 they are consistently below the nominal $2^{-k}$ scale. This is qualitative support for
-a complexity-robustness trend, not a precise scaling law.}
+a complexity-robustness trend, not a precise scaling law. The n/a entries for $k=2$
+mean that there is no clean expressivity gap to collapse.}
 
 % =============================================================================
 \section{Discussion}
