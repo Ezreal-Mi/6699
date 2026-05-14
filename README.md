@@ -237,6 +237,15 @@ command-line reproduction paths share one implementation.
 The top-level `notebooks/6699_final.ipynb` can either inspect the saved outputs
 or execute the six phase notebooks in order after setting `RUN_EXPERIMENTS = True`.
 
+### Reproducibility Note
+
+This repository contains all source code, phase notebooks, saved result tables,
+figures, and the compiled PDF needed to inspect the project from a fresh clone.
+Large trained `.pt` checkpoints are intentionally excluded from Git. To fully
+regenerate those local checkpoints, run `notebooks/6699_final.ipynb` with
+`RUN_EXPERIMENTS = True`, or run Phase 1 directly with
+`python scripts/run_phase1.py` followed by `python scripts/plot_phase1_w16.py`.
+
 ---
 
 ## 9. Project Timeline
